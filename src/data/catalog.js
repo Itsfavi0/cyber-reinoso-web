@@ -29,6 +29,7 @@ export const STATIONS = [
 
 // Gamers semilla (alias, saldo y minutos acumulados reales del script SQL).
 export const GAMERS = [
+  { id: 1, alias: 'Invitado', balance: 200, minutes: 0 },
   { id: 2, alias: 'Maximus_27', balance: 15.5, minutes: 120 },
   { id: 3, alias: 'Jojo', balance: 25, minutes: 1500 },
   { id: 4, alias: 'flamed4rk', balance: 40, minutes: 4500 },

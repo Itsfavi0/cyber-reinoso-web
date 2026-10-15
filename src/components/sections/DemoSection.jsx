@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
 import { FlaskConical } from 'lucide-react'
 import { useInView } from '../../hooks/useInView'
 import { useStationSimulation } from '../../hooks/useStationSimulation'
@@ -10,6 +10,7 @@ import { DemoToolbar } from '../demo/DemoToolbar'
 export function DemoSection() {
   const [ref, inView] = useInView({ rootMargin: '0px 0px -15% 0px' })
   const [state, dispatch] = useStationSimulation(inView)
+  const detailRef = useRef(null)
   const { stations, gamers, selectedCode, ticks, lastCut } = state
 
   const selected = stations.find((station) => station.code === selectedCode)
@@ -21,7 +22,14 @@ export function DemoSection() {
     () => stations.reduce((acc, s) => ({ ...acc, [s.status]: acc[s.status] + 1 }), { available: 0, busy: 0, maintenance: 0 }),
     [stations],
   )
-  const selectStation = (code) => dispatch({ type: 'select', code })
+  const selectStation = (code) => {
+    dispatch({ type: 'select', code })
+    // En pantallas angostas el detalle queda debajo de la grilla: lo acercamos para que se vea el cambio.
+    if (window.matchMedia('(max-width: 1023px)').matches) {
+      const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      detailRef.current?.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'nearest' })
+    }
+  }
 
   return (
     <section id="demo" aria-labelledby="demo-title" className="section-pad border-t border-line">
@@ -50,8 +58,9 @@ export function DemoSection() {
           <div className="hud-frame bg-panel">
             <DemoToolbar clock={state.clock} counts={counts} speed={state.speed} paused={state.paused} dispatch={dispatch} />
 
-            <div className="grid lg:grid-cols-[1fr_22rem]">
-              <div className="border-line p-3 sm:p-4 lg:border-r">
+            {/* En móvil el orden es estaciones, detalle y bitácora; en escritorio el detalle va a la derecha. */}
+            <div className="grid lg:grid-cols-[1fr_22rem] lg:grid-rows-[auto_1fr]">
+              <div className="p-3 sm:p-4 lg:border-r lg:border-line">
                 <ul className="grid grid-cols-2 gap-2 min-[420px]:grid-cols-3 sm:gap-3 md:grid-cols-4" aria-label="Estaciones">
                   {stations.map((station) => (
                     <li key={station.code}>
@@ -65,12 +74,13 @@ export function DemoSection() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-5 border-t border-line pt-4">
-                  <EventLog entries={state.log} />
-                </div>
               </div>
 
-              <aside aria-label={`Detalle de ${selected.code}`} className="border-t border-line p-4 sm:p-5 lg:border-t-0">
+              <aside
+                ref={detailRef}
+                aria-label={`Detalle de ${selected.code}`}
+                className="scroll-mt-20 border-t border-line p-4 sm:p-5 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:border-t-0"
+              >
                 <StationDetail
                   key={selected.code}
                   station={selected}
@@ -79,6 +89,10 @@ export function DemoSection() {
                   dispatch={dispatch}
                 />
               </aside>
+
+              <div className="border-t border-line p-3 sm:p-4 lg:col-start-1 lg:row-start-2 lg:border-r">
+                <EventLog entries={state.log} />
+              </div>
             </div>
           </div>
         </div>

@@ -11,7 +11,9 @@ export function Hero() {
       <div className="container-page relative">
         <div className="max-w-3xl">
           <h1 id="hero-title" className="rise text-[clamp(2.4rem,6.4vw,4.6rem)] font-semibold tracking-[-0.02em]">
-            Cobra cada minuto. Corta a tiempo. Premia a quien vuelve.
+            <span className="block">Cobra cada minuto.</span>
+            <span className="block">Corta a tiempo.</span>
+            <span className="block">Premia a quien vuelve.</span>
           </h1>
           <p className="rise rise-2 mt-6 max-w-2xl text-lg text-muted sm:text-xl">
             Cyber Reinoso es el sistema de escritorio que administra un LAN center de punta a punta: mapa de

@@ -33,7 +33,7 @@ export function SqlSnippets() {
   }
 
   return (
-    <div className="overflow-hidden rounded-lg border border-line bg-panel">
+    <div className="min-w-0 overflow-hidden rounded-lg border border-line bg-panel">
       <div role="tablist" aria-label="Consultas SQL del sistema" className="flex overflow-x-auto border-b border-line" onKeyDown={onKeyDown}>
         {SQL_SNIPPETS.map((snippet, index) => {
           const isActive = index === activeIndex

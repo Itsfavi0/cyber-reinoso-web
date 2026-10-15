@@ -39,7 +39,7 @@ export function FeaturesSection() {
 }
 
 function Tile({ className = '', children }) {
-  return <article className={`rounded-lg border border-line bg-panel p-6 sm:p-7 ${className}`}>{children}</article>
+  return <article className={`min-w-0 rounded-lg border border-line bg-panel p-6 sm:p-7 ${className}`}>{children}</article>
 }
 
 function KillSwitchTile() {
@@ -63,32 +63,40 @@ function KillSwitchTile() {
   )
 }
 
-/** Saldo que baja en línea recta hasta S/ 0.00, con el punto exacto del corte. */
+/**
+ * Saldo que baja en línea recta hasta S/ 0.00, con el punto exacto del corte.
+ * Las líneas son un SVG elástico y las etiquetas son HTML, así el texto no se encoge en móvil.
+ */
 function BalanceChart() {
   return (
     <figure className="mt-8 flex-1">
-      <svg viewBox="0 0 560 190" className="h-auto w-full" role="img" aria-labelledby="balance-chart-title">
-        <title id="balance-chart-title">
-          Gráfico: el saldo de S/ 5.00 baja minuto a minuto hasta S/ 0.00, momento en que la sesión se corta y la
-          estación queda disponible.
-        </title>
-        {[30, 80, 130].map((y) => (
-          <line key={y} x1="40" x2="550" y1={y} y2={y} stroke="var(--color-line)" strokeDasharray="2 6" />
-        ))}
-        <line x1="40" x2="550" y1="160" y2="160" stroke="var(--color-line-strong)" />
-        <text x="0" y="34" className="fill-faint font-mono text-[11px]">5.00</text>
-        <text x="0" y="164" className="fill-faint font-mono text-[11px]">0.00</text>
+      <div className="relative h-44 pl-12 font-mono text-[11px] sm:h-52 sm:text-xs" role="img" aria-label="Gráfico: el saldo de S/ 5.00 baja minuto a minuto hasta S/ 0.00; en ese momento la sesión se corta y la estación queda disponible.">
+        <span className="absolute top-0 left-0 -translate-y-1/2 text-faint" aria-hidden="true">5.00</span>
+        <span className="absolute bottom-6 left-0 translate-y-1/2 text-faint" aria-hidden="true">0.00</span>
 
-        <path d="M40 30 L380 160" fill="none" stroke="var(--color-ice)" strokeWidth="2.5" />
-        <path d="M40 30 L380 160 L40 160 Z" fill="var(--color-ice)" opacity="0.08" />
-        <line x1="380" x2="380" y1="20" y2="160" stroke="var(--color-signal)" strokeDasharray="4 4" />
-        <circle cx="380" cy="160" r="5" fill="var(--color-signal)" />
-        <text x="390" y="34" className="fill-signal font-mono text-[12px]">corte automático</text>
-        <text x="390" y="52" className="fill-muted font-mono text-[11px]">PC liberada</text>
-        <path d="M380 160 L550 160" stroke="var(--color-mint)" strokeWidth="2.5" />
-        <text x="40" y="184" className="fill-faint font-mono text-[11px]">inicio de sesión</text>
-        <text x="550" y="184" textAnchor="end" className="fill-mint font-mono text-[11px]">Disponible</text>
-      </svg>
+        <div className="relative h-[calc(100%-1.5rem)]" aria-hidden="true">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 size-full overflow-visible">
+            {[0, 33, 66].map((y) => (
+              <line key={y} x1="0" x2="100" y1={y} y2={y} stroke="var(--color-line)" strokeDasharray="2 6" vectorEffect="non-scaling-stroke" />
+            ))}
+            <line x1="0" x2="100" y1="100" y2="100" stroke="var(--color-line-strong)" vectorEffect="non-scaling-stroke" />
+            <path d="M0 0 L66 100 L0 100 Z" fill="var(--color-ice)" opacity="0.08" />
+            <path d="M0 0 L66 100" fill="none" stroke="var(--color-ice)" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
+            <line x1="66" x2="66" y1="-6" y2="100" stroke="var(--color-signal)" strokeDasharray="4 4" vectorEffect="non-scaling-stroke" />
+            <path d="M66 100 L100 100" stroke="var(--color-mint)" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
+          </svg>
+          <span className="absolute bottom-0 left-[66%] size-2.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-signal" />
+          <span className="absolute top-0 left-[66%] pl-2 leading-snug">
+            <span className="block text-signal">corte</span>
+            <span className="block text-muted">PC liberada</span>
+          </span>
+        </div>
+
+        <div className="mt-2 flex justify-between" aria-hidden="true">
+          <span className="text-faint">inicio</span>
+          <span className="text-mint">Disponible</span>
+        </div>
+      </div>
     </figure>
   )
 }

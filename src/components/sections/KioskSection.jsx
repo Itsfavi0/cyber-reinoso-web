@@ -107,7 +107,15 @@ function PosMockup() {
     <div className="hud-frame bg-line-strong/60 p-px">
       <div className="hud-frame grid bg-panel md:grid-cols-[1fr_17rem]">
         <div className="p-4 sm:p-5">
-          <h3 className="font-display text-sm font-semibold">Productos</h3>
+          <div className="flex items-baseline justify-between gap-3">
+            <h3 className="font-display text-sm font-semibold">Productos</h3>
+            {/* En móvil la boleta queda debajo: este atajo muestra el total y lleva hasta ella. */}
+            {lines.length > 0 && (
+              <a href="#boleta" className="inline-flex min-h-11 items-center font-mono text-xs text-ice md:hidden">
+                Ver boleta: {formatSoles(total)}
+              </a>
+            )}
+          </div>
           <ul className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-3">
             {PRODUCTS.map((product) => {
               const left = stock[product.id] - (cart[product.id] ?? 0)
@@ -137,7 +145,7 @@ function PosMockup() {
           </ul>
         </div>
 
-        <div className="flex flex-col border-t border-line bg-raised/30 p-4 sm:p-5 md:border-t-0 md:border-l">
+        <div id="boleta" className="flex scroll-mt-20 flex-col border-t border-line bg-raised/30 p-4 sm:p-5 md:border-t-0 md:border-l">
           <div className="font-mono text-xs text-muted">
             <p className="text-sm text-text">Boleta N.° {String(saleNumber).padStart(4, '0')}</p>
             <p className="mt-1">Gamer: {BUYER.alias}</p>
