@@ -30,3 +30,8 @@ dist-ssr
 
 # Claude (local)
 .claude/settings.local.json
+
+# Notas de trabajo locales (no forman parte del proyecto)
+CLAUDE.md
+PROGRESS.md
+.claude/
