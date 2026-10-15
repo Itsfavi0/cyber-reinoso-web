@@ -1,5 +1,6 @@
 import { Nav } from './components/layout/Nav'
 import { Footer } from './components/layout/Footer'
+import { Hero } from './components/sections/Hero'
 
 export default function App() {
   return (
@@ -12,9 +13,7 @@ export default function App() {
       </a>
       <Nav />
       <main id="contenido" tabIndex={-1} className="outline-none">
-        <section id="inicio" className="container-page pt-32 pb-24">
-          <h1 className="text-5xl">Cyber Reinoso</h1>
-        </section>
+        <Hero />
       </main>
       <Footer />
     </>

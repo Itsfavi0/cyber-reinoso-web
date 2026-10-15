@@ -32,7 +32,7 @@ function createSession(gamer, elapsedSeconds = 0) {
   }
 }
 
-function createInitialState() {
+export function createInitialState() {
   const gamers = Object.fromEntries(GAMERS.map((gamer) => [gamer.id, { ...gamer }]))
   const stations = STATIONS.map((station) => {
     const opening = OPENING_SESSIONS[station.code]

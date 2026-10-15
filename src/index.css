@@ -123,7 +123,7 @@
   .stripes {
     background-image: repeating-linear-gradient(
       -45deg,
-      color-mix(in oklab, var(--color-amber) 14%, transparent) 0 6px,
+      color-mix(in oklab, var(--color-amber) 10%, transparent) 0 6px,
       transparent 6px 12px
     );
   }
@@ -144,4 +144,35 @@
       padding-inline: 2rem;
     }
   }
+}
+
+/* Retícula de "plano de sala" detrás del hero, desvanecida hacia los bordes */
+.hero-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--color-line) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--color-line) 55%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 70% 55%, #000 20%, transparent 75%);
+}
+
+/* Única coreografía de entrada de la página: el hero aparece en cascada al cargar */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+.rise {
+  animation: rise 700ms var(--ease-out-strong) both;
+}
+.rise-2 {
+  animation-delay: 80ms;
+}
+.rise-3 {
+  animation-delay: 160ms;
+}
+.rise-4 {
+  animation-delay: 260ms;
+  animation-duration: 900ms;
 }
