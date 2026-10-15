@@ -1,4 +1,4 @@
-// Consultas copiadas de conexion.py (DBManager). Solo se recortó la indentación.
+// Consultas copiadas de conexion.py (DBManager). Solo se ajustaron sangrías y saltos de línea.
 
 export const SQL_SNIPPETS = [
   {
@@ -9,9 +9,11 @@ export const SQL_SNIPPETS = [
     code: `UPDATE Estaciones
 SET estado = CASE WHEN estado = 1 THEN 0 ELSE 1 END,
     id_estado = CASE WHEN estado = 1
-                    THEN (SELECT id_estado FROM EstadosEstacion WHERE nombre_estado = 'Mantenimiento')
-                    ELSE (SELECT id_estado FROM EstadosEstacion WHERE nombre_estado = 'Disponible')
-                END
+        THEN (SELECT id_estado FROM EstadosEstacion
+              WHERE nombre_estado = 'Mantenimiento')
+        ELSE (SELECT id_estado FROM EstadosEstacion
+              WHERE nombre_estado = 'Disponible')
+    END
 WHERE codigo_pc = ?`,
   },
   {
@@ -39,7 +41,8 @@ OUTPUT INSERTED.id_venta
 VALUES (?, ?, ?)
 
 -- 3. Por cada producto del carrito: detalle y stock
-INSERT INTO DetalleVentas (id_venta, id_producto, cantidad, precio_unitario, subtotal)
+INSERT INTO DetalleVentas
+    (id_venta, id_producto, cantidad, precio_unitario, subtotal)
 VALUES (?, ?, ?, ?, ?)
 UPDATE Productos SET stock = stock - ? WHERE id_producto = ?
 

@@ -52,10 +52,13 @@ function KillSwitchTile() {
         Sin discusiones en el mostrador.
       </p>
       <BalanceChart />
-      <p className="mt-4 overflow-x-auto rounded-md border border-line bg-night px-4 py-3 font-mono text-xs whitespace-nowrap text-muted sm:text-sm">
-        <span className="text-ice">if</span> tarifa_proximo_minuto * (1 - descuento) {'>'} saldo:{' '}
-        <span className="text-signal">cerrar_sesion(es_corte_automatico=True)</span>
-      </p>
+      <pre className="mt-4 overflow-x-auto rounded-md border border-line bg-night px-4 py-3 font-mono text-xs leading-relaxed text-muted sm:text-sm">
+        <code>
+          <span className="text-ice">if</span> tarifa_proximo_minuto * (1 - descuento) {'>'} saldo:
+          {'\n    '}
+          <span className="text-signal">cerrar_sesion(es_corte_automatico=True)</span>
+        </code>
+      </pre>
     </Tile>
   )
 }

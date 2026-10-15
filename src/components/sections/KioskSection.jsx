@@ -5,6 +5,7 @@ import { formatSoles } from '../../lib/billing'
 
 const BUYER = { alias: 'Jojo', balance: 25 }
 const FIRST_SALE_NUMBER = 42
+const TOP_UP = 10
 
 const POINTS = [
   {
@@ -24,16 +25,16 @@ const POINTS = [
 export function KioskSection() {
   return (
     <section id="kiosco" aria-labelledby="kiosco-title" className="section-pad border-t border-line">
-      <div className="container-page grid gap-12 lg:grid-cols-[0.9fr_1.4fr] lg:gap-16">
+      <div className="container-page grid gap-12 xl:grid-cols-[0.9fr_1.4fr] xl:gap-16">
         <div>
           <h2 id="kiosco-title" className="text-4xl font-semibold sm:text-5xl">
             Un kiosco que cuadra con la caja
           </h2>
-          <p className="mt-5 text-lg text-muted">
+          <p className="mt-5 max-w-2xl text-lg text-muted">
             Snacks y bebidas se cobran desde la misma billetera con la que el gamer paga su tiempo. Prueba a
             venderle algo a Jojo, o fuerza un error de base de datos para ver el ROLLBACK.
           </p>
-          <dl className="mt-10 space-y-6">
+          <dl className="mt-10 grid gap-6 md:grid-cols-3 xl:grid-cols-1">
             {POINTS.map((point) => (
               <div key={point.title} className="border-l-2 border-line-strong pl-5">
                 <dt className="font-display text-lg font-semibold">{point.title}</dt>
@@ -71,6 +72,11 @@ function PosMockup() {
     })
   }
 
+  const topUp = () => {
+    setBalance((current) => current + TOP_UP)
+    setResult({ ok: true, text: `Recarga de ${formatSoles(TOP_UP)} aplicada a la billetera de ${BUYER.alias}.` })
+  }
+
   const checkout = () => {
     if (lines.length === 0) return
     if (total > balance) {
@@ -102,7 +108,7 @@ function PosMockup() {
       <div className="hud-frame grid bg-panel md:grid-cols-[1fr_17rem]">
         <div className="p-4 sm:p-5">
           <h3 className="font-display text-sm font-semibold">Productos</h3>
-          <ul className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+          <ul className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-3">
             {PRODUCTS.map((product) => {
               const left = stock[product.id] - (cart[product.id] ?? 0)
               const Icon = product.kind === 'drink' ? CupSoda : Cookie
@@ -135,7 +141,19 @@ function PosMockup() {
           <div className="font-mono text-xs text-muted">
             <p className="text-sm text-text">Boleta N.° {String(saleNumber).padStart(4, '0')}</p>
             <p className="mt-1">Gamer: {BUYER.alias}</p>
-            <p>Saldo: <span className="text-text tabular">{formatSoles(balance)}</span></p>
+            <p className="flex items-center justify-between gap-2">
+              <span>
+                Saldo: <span className="text-text tabular">{formatSoles(balance)}</span>
+              </span>
+              <button
+                type="button"
+                onClick={topUp}
+                className="-my-2 inline-flex min-h-9 items-center gap-1 rounded px-2 font-sans text-xs text-ice transition-colors duration-150 hover:bg-ice/10 [@media(pointer:coarse)]:min-h-11"
+              >
+                <Plus className="size-3" aria-hidden="true" />
+                Recargar S/ {TOP_UP}
+              </button>
+            </p>
             <p>Cajero: renzo_caja</p>
           </div>
 
