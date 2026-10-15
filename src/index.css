@@ -203,3 +203,9 @@
   animation: cut-flash 1.2s ease-out 1;
   pointer-events: none;
 }
+
+.rank-slider {
+  accent-color: var(--color-ice);
+  min-height: 44px;
+  cursor: pointer;
+}
