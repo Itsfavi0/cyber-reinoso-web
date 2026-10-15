@@ -2,6 +2,8 @@
 
 **English** · [Español](README.es.md)
 
+**Live demo:** [cyber-reinoso-web.vercel.app](https://cyber-reinoso-web.vercel.app/)
+
 Product page for **Cyber Reinoso**, a desktop system (Python + Tkinter + SQL Server) for running LAN centers and eSports arenas. The page presents it as a commercial product and includes an **interactive station-map demo**, built in React, that reproduces the system's real business rules in the browser.
 
 > The site is in Spanish, since it targets LAN center owners in Peru.

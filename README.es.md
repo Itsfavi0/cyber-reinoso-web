@@ -2,6 +2,8 @@
 
 [English](README.md) · **Español**
 
+**Demo en vivo:** [cyber-reinoso-web.vercel.app](https://cyber-reinoso-web.vercel.app/)
+
 Página de producto de **Cyber Reinoso**, un sistema de escritorio (Python + Tkinter + SQL Server) para administrar LAN centers y arenas de eSports. La página lo presenta como un producto comercial e incluye una **demo interactiva del mapa de estaciones**, hecha en React, que reproduce en el navegador las reglas de negocio reales del sistema.
 
 ![Hero de la página de Cyber Reinoso](docs/screenshot.png)
