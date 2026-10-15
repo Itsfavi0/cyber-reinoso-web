@@ -126,16 +126,28 @@ function PosMockup() {
                     type="button"
                     onClick={() => changeQty(product.id, 1)}
                     disabled={left <= 0}
-                    aria-label={`Agregar ${product.name} ${product.size}, ${formatSoles(product.price)}, quedan ${left}`}
                     className="flex h-full w-full flex-col rounded-md border border-line bg-raised/40 p-3 text-left transition-[border-color,transform] duration-150 ease-out hover:border-line-strong active:scale-[0.97] disabled:opacity-45"
                   >
                     <Icon className="size-4 text-faint" aria-hidden="true" />
-                    <span className="mt-2 text-sm leading-snug text-text">{product.name}</span>
+                    <span className="mt-2 text-sm leading-snug text-text">
+                      <span className="sr-only">Agregar </span>
+                      {product.name}
+                    </span>
                     <span className="text-xs text-faint">{product.size}</span>
                     <span className="mt-auto flex items-baseline justify-between pt-2">
-                      <span className="font-mono text-sm text-ice tabular">{product.price.toFixed(2)}</span>
+                      <span className="font-mono text-sm text-ice tabular">
+                        <span className="sr-only">, S/ </span>
+                        {product.price.toFixed(2)}
+                      </span>
                       <span className={`font-mono text-[11px] tabular ${left <= 3 ? 'text-amber' : 'text-faint'}`}>
-                        {left > 0 ? `${left} u.` : 'Agotado'}
+                        {left > 0 ? (
+                          <>
+                            <span className="sr-only">, quedan </span>
+                            {left} u.
+                          </>
+                        ) : (
+                          'Agotado'
+                        )}
                       </span>
                     </span>
                   </button>
