@@ -55,10 +55,6 @@
   }
 
   body {
-    background-color: var(--color-night);
-    color: var(--color-text);
-    font-family: var(--font-sans);
-    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -86,7 +82,26 @@
   p {
     text-wrap: pretty;
   }
+}
 
+/*
+ * Fondo, color y tipografía base fuera de @layer: los estilos sin capa le ganan
+ * a los que están en una, así que si quien aloja la página inyecta un
+ * `body { background: #fff }` (como hace el visor de artifacts), el tema oscuro
+ * se mantiene. `html body` sube la especificidad por si el orden cambia.
+ */
+html:root {
+  color-scheme: dark;
+  background-color: var(--color-night);
+}
+
+html body {
+  margin: 0;
+  background-color: var(--color-night);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 @layer components {
