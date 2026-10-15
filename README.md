@@ -1,131 +1,136 @@
-# Cyber Reinoso: cobra cada minuto, corta a tiempo, premia a quien vuelve
+# Cyber Reinoso: bill every minute, cut off on time, reward the regulars
 
-Página de producto de **Cyber Reinoso**, un sistema de escritorio (Python + Tkinter + SQL Server) para administrar LAN centers y arenas de eSports. La página lo presenta como un producto comercial e incluye una **demo interactiva del mapa de estaciones**, hecha en React, que reproduce en el navegador las reglas de negocio reales del sistema.
+**English** · [Español](README.es.md)
 
-![Hero de la página de Cyber Reinoso](docs/screenshot.png)
+Product page for **Cyber Reinoso**, a desktop system (Python + Tkinter + SQL Server) for running LAN centers and eSports arenas. The page presents it as a commercial product and includes an **interactive station-map demo**, built in React, that reproduces the system's real business rules in the browser.
 
-> Repositorio del sistema: [github.com/Itsfavi0/Cyber-Reinoso](https://github.com/Itsfavi0/Cyber-Reinoso)
+> The site is in Spanish, since it targets LAN center owners in Peru.
 
-## Qué es
+![Cyber Reinoso hero section](docs/screenshot.png)
 
-Cyber Reinoso resuelve los cuatro puntos donde un LAN center pierde dinero: el tiempo que no se cobra, los clientes que se pasan de lo pagado, el kiosco que no cuadra con la caja y los clientes frecuentes que no tienen motivo para volver. Esta página explica eso en 30 segundos a un dueño de local, y muestra a un reclutador cómo está construido por dentro.
+> System repository: [github.com/Itsfavi0/Cyber-Reinoso](https://github.com/Itsfavi0/Cyber-Reinoso)
 
-Todas las cifras de la página salen del código real del sistema: tarifas por categoría (`CategoriasEstacion`), umbrales y descuentos VIP (`modelos.py`), hardware de las 12 estaciones y gamers de prueba (`estructura_db.sql`) y consultas SQL (`conexion.py`).
+## What it is
 
-## Secciones
+Cyber Reinoso tackles the four places where a LAN center loses money: time that never gets billed, customers who play past what they paid for, a snack kiosk that doesn't match the cash register, and regulars with no reason to come back. The page explains that to a venue owner in 30 seconds, and shows a recruiter how it is built under the hood.
 
-1. **Hero**: propuesta de valor y una vista previa del panel con los cronómetros en marcha.
-2. **Problema / solución**: cinco situaciones de un local, antes y después del sistema.
-3. **Demo interactiva** (pieza principal): mapa de 12 estaciones con estados, cronómetros, saldo que baja y **Kill Switch** que corta solo la sesión al llegar a S/ 0.00. Al hacer clic en una estación se ve su detalle, el gamer y su rango, y se puede recargar, cobrar, sentar a otro gamer o enviarla a mantenimiento.
-4. **Funciones**: un bento con jerarquía (billetera y Kill Switch como pieza grande, tarifas, roles, recuperación ante cortes de luz, borrado lógico y reportes PDF).
-5. **Rangos VIP**: tabla de rangos y una calculadora de ahorro.
-6. **Kiosco POS**: punto de venta interactivo con boleta cabecera-detalle, stock en vivo, saldo insuficiente y un interruptor para simular un error de SQL Server y ver el ROLLBACK.
-7. **Ingeniería**: diagrama SVG de las capas (UI → Mediator → Negocio / DAO → SQL Server), decisiones de diseño y tres consultas SQL reales con resaltado propio.
-8. **Stack**, **preguntas frecuentes** y **CTA** con formulario de demo que valida y confirma en la página.
+Every number on the page comes from the system's real code: rates per station category (`CategoriasEstacion`), VIP thresholds and discounts (`modelos.py`), the hardware of the 12 stations and the test gamers (`estructura_db.sql`), and the SQL queries (`conexion.py`).
 
-![Demo del mapa de estaciones con el Kill Switch a punto de cortar](docs/demo.png)
+## Sections
+
+1. **Hero**: value proposition and a live preview of the dashboard with its timers running.
+2. **Problem / solution**: five everyday situations in a venue, before and after the system.
+3. **Interactive demo** (the centerpiece): a map of 12 stations with statuses, timers, a dropping balance and a **Kill Switch** that ends the session automatically when the balance hits S/ 0.00. Clicking a station shows its details, the gamer and their rank, and lets you top up, check out, seat another gamer or send it to maintenance.
+4. **Features**: a bento grid with hierarchy (wallet and Kill Switch as the large tile, rates, roles, power-outage recovery, soft delete and PDF reports).
+5. **VIP ranks**: rank table and a savings calculator.
+6. **POS kiosk**: interactive point of sale with a header-detail receipt, live stock, insufficient-balance handling and a switch that simulates a SQL Server error so you can watch the ROLLBACK.
+7. **Engineering**: SVG diagram of the layers (UI → Mediator → Business / DAO → SQL Server), design decisions and three real SQL queries with custom highlighting.
+8. **Stack**, **FAQ** and a **CTA** with a demo-request form that validates and confirms on the page.
+
+![Station-map demo with the Kill Switch about to cut a session](docs/demo.png)
 
 ## Stack
 
 - **React 19** + **Vite 8**
-- **Tailwind CSS 4** (tokens en `@theme`, sin archivo de configuración)
-- **lucide-react** para íconos
-- **@fontsource** para fuentes autohospedadas (Chakra Petch, IBM Plex Sans, IBM Plex Mono)
-- **oxlint** como linter (viene con el scaffold actual de Vite)
+- **Tailwind CSS 4** (tokens in `@theme`, no config file)
+- **lucide-react** for icons
+- **@fontsource** for self-hosted fonts (Chakra Petch, IBM Plex Sans, IBM Plex Mono)
+- **oxlint** as the linter (ships with the current Vite scaffold)
 
-Sin librerías de animación ni de estado: el movimiento es CSS y la simulación es un `useReducer`.
+No animation or state libraries: motion is plain CSS and the simulation is a `useReducer`.
 
-## Cómo ejecutarlo
+## Running it
 
-Requiere Node 20 o superior.
+Requires Node 20.19 or later (needed by Vite 8).
 
 ```bash
 npm install
 npm run dev       # http://localhost:5173
-npm run build     # build de producción en dist/
-npm run preview   # sirve el build en http://localhost:5173
+npm run build     # production build in dist/
+npm run preview   # serves the build at http://localhost:5173
 npm run lint
 ```
 
-## Estructura
+## Structure
 
 ```text
 src/
-├── App.jsx                      # orden de las secciones
-├── index.css                    # tokens de diseño, base y animaciones
+├── App.jsx                      # section order
+├── index.css                    # design tokens, base styles and animations
 ├── data/
-│   ├── catalog.js               # estaciones, categorías, gamers y productos (del SQL real)
-│   ├── sqlSnippets.js           # consultas copiadas de conexion.py
-│   └── site.js                  # enlaces y navegación
+│   ├── catalog.js               # stations, categories, gamers and products (from the real SQL)
+│   ├── sqlSnippets.js           # queries copied from conexion.py
+│   └── site.js                  # links and navigation
 ├── lib/
-│   ├── billing.js               # reglas portadas de modelos.py y main.py (rangos, tarifas, Kill Switch)
-│   ├── highlightSql.js          # tokenizador mínimo para resaltar SQL sin innerHTML
-│   └── validateDemoRequest.js   # validación del formulario
+│   ├── billing.js               # rules ported from modelos.py and main.py (ranks, rates, Kill Switch)
+│   ├── highlightSql.js          # tiny tokenizer to highlight SQL without innerHTML
+│   └── validateDemoRequest.js   # form validation
 ├── hooks/
-│   ├── useStationSimulation.js  # motor de la demo (reducer + reloj de 1 s)
-│   ├── useInView.js             # pausa la simulación fuera de pantalla
+│   ├── useStationSimulation.js  # demo engine (reducer + 1 s clock)
+│   ├── useInView.js             # pauses the simulation when off screen
 │   └── usePrefersReducedMotion.js
 └── components/
-    ├── layout/                  # Nav (con menú móvil) y Footer
-    ├── sections/                # una sección por archivo
-    ├── demo/                    # piezas del mapa: tile, detalle, bitácora, barra de controles
-    ├── engineering/             # diagrama de arquitectura y pestañas de SQL
-    ├── form/                    # formulario de demo y campo accesible
-    └── ui/                      # logo, estados, ícono de GitHub
+    ├── layout/                  # Nav (with mobile menu) and Footer
+    ├── sections/                # one section per file
+    ├── demo/                    # map pieces: tile, detail, event log, control bar
+    ├── engineering/             # architecture diagram and SQL tabs
+    ├── form/                    # demo form and accessible field
+    └── ui/                      # logo, statuses, GitHub icon
 ```
 
-## Decisiones de diseño
+## Design decisions
 
-- **Dirección de arte**: "consola de operaciones" sobria, más cerca de Linear o Vercel que de un estilo gamer con luces RGB. Fondo pizarra azul noche y **un solo acento frío** (`#7CC8FF`) que hereda el azul del logo real.
-- **Colores de estado coherentes en toda la página**: Disponible = menta, Ocupada = acento hielo, Mantenimiento = ámbar con rayado diagonal, corte = rojo señal. Ningún estado depende solo del color: cada uno tiene su forma (anillo, punto lleno, llave) y texto.
-- **Tipografía**: Chakra Petch (display angular, de interfaz de juego competitivo), IBM Plex Sans para el cuerpo e IBM Plex Mono para cifras, cronómetros y SQL.
-- **Elemento firma**: el marco de panel con esquina chaflanada (`clip-path`), reservado solo para las piezas "de consola" (vista previa, demo, calculadora, kiosco y formulario). El resto de la página es tranquilo y alineado a la izquierda.
-- **Descartes**: la paleta violeta + rosa neón que propuso la herramienta de diseño (es el cliché que el brief prohíbe) y el verde fósforo sobre negro (demasiado visto).
-- **Movimiento**: una sola coreografía de entrada en el hero; el resto del movimiento responde a acciones del usuario (presionar botones, el destello del corte, el menú móvil). Solo `transform` y `opacity`, con curvas ease-out propias.
-- **Marcas reales**: el inventario de prueba del sistema usa marcas comerciales; la página muestra nombres genéricos con los mismos precios y stock, y no usa las fotos de productos ni de PCs del repositorio porque muestran logos de terceros.
+- **Art direction**: a restrained "operations console", closer to Linear or Vercel than to an RGB gamer look. A midnight-slate background and **a single cool accent** (`#7CC8FF`) inherited from the blue of the real logo.
+- **Consistent status colors across the page**: Available = mint, Busy = ice accent, Maintenance = amber with diagonal stripes, cut-off = signal red. No status relies on color alone: each one has its own shape (ring, filled dot, wrench) and a text label.
+- **Typography**: Chakra Petch (an angular display face with a competitive-gaming UI feel), IBM Plex Sans for body text and IBM Plex Mono for figures, timers and SQL.
+- **Signature element**: the panel frame with a chamfered corner (`clip-path`), reserved for the "console" pieces only (preview, demo, calculator, kiosk and form). The rest of the page stays calm and left-aligned.
+- **Rejected options**: the violet + neon pink palette the design tool suggested (exactly the cliché the brief ruled out) and phosphor green on black (overused).
+- **Motion**: a single entrance choreography in the hero; everything else responds to user actions (button presses, the cut-off flash, the mobile menu). Only `transform` and `opacity`, with custom ease-out curves.
+- **Real brands**: the system's test inventory uses commercial brands; the page shows generic names with the same prices and stock, and doesn't use the repository's product or PC photos because they show third-party logos.
 
-## Decisiones técnicas
+## Technical decisions
 
-- **Lógica de negocio separada de la UI**: `lib/billing.js` contiene las mismas reglas que `modelos.py` (rangos por minutos, descuento por rango, tarifa por minuto redondeada) y el criterio del Kill Switch de `actualizar_cronometros()`: si el costo del próximo minuto, con descuento, supera el saldo, se corta y se cobra lo que quedaba.
-- **Simulación con `useReducer`**: todas las transiciones (tick, iniciar, cerrar, recargar, mantenimiento) son funciones puras fáciles de probar. El reloj solo corre mientras la demo está en pantalla (`IntersectionObserver`).
-- **Resaltado de SQL propio**: un tokenizador de 20 líneas que devuelve fragmentos `{ text, kind }` y se pintan como `<span>`. Evita una librería pesada y el uso de `innerHTML`.
-- **Fuentes autohospedadas**, solo el subconjunto latin y los pesos usados, con `font-display: swap`.
+- **Business logic separated from the UI**: `lib/billing.js` holds the same rules as `modelos.py` (ranks by minutes, discount per rank, per-minute rate rounding) and the Kill Switch criterion from `actualizar_cronometros()`: if the cost of the next minute, after discount, exceeds the balance, the session is cut and whatever was left is charged.
+- **Simulation with `useReducer`**: every transition (tick, start, end, top up, maintenance) is a pure function that is easy to test. The clock only runs while the demo is on screen (`IntersectionObserver`).
+- **Custom SQL highlighting**: a 20-line tokenizer returns `{ text, kind }` fragments that are rendered as `<span>`s. It avoids a heavy library and any use of `innerHTML`.
+- **Self-hosted fonts**, only the latin subset and the weights in use, with `font-display: swap`.
+- **Base styles outside `@layer`**: the `body` background, color and typography live outside Tailwind's layers. Unlayered styles always beat layered ones, so if whoever hosts the page injects their own `body { background: #fff }` (which happens when it is embedded in viewers or previews), the dark theme holds instead of leaving light text on a white background.
 
-## Accesibilidad
+## Accessibility
 
-- HTML semántico, un solo `h1`, encabezados en orden y enlace "Saltar al contenido".
-- Navegación completa con teclado, foco visible, menú móvil con `aria-expanded` y cierre con Escape, pestañas de SQL con el patrón ARIA (flechas, Inicio y Fin).
-- Contraste AA verificado para todos los pares de texto (el texto más tenue llega a 5:1).
-- Los cortes automáticos se anuncian con una región `aria-live`; la simulación se puede pausar.
-- Formulario con etiquetas visibles, errores junto al campo enlazados con `aria-describedby`, foco en el primer error y confirmación enfocada.
-- `prefers-reduced-motion`: sin desplazamientos (solo fundidos suaves), la vista previa del hero se detiene y el desplazamiento automático no se anima.
-- Objetivos táctiles de 44 px o más en pantallas táctiles.
+- Semantic HTML, a single `h1`, headings in order and a "Skip to content" link.
+- Full keyboard navigation, visible focus, a mobile menu with `aria-expanded` that closes on Escape, and SQL tabs following the ARIA pattern (arrows, Home and End).
+- AA contrast checked for every text pair (the faintest text reaches 5:1).
+- Automatic cut-offs are announced through an `aria-live` region; the simulation can be paused.
+- Form with visible labels, errors next to each field linked via `aria-describedby`, focus on the first error and a focused confirmation.
+- `prefers-reduced-motion`: no movement (only soft fades), the hero preview stops and automatic scrolling is not animated.
+- Touch targets of 44 px or more on touch screens.
 
-## Rendimiento
+## Performance
 
-Lighthouse sobre el build de producción (`npm run preview`):
+Lighthouse on the production build (`npm run preview`):
 
-| | Rendimiento | Accesibilidad | Buenas prácticas | SEO |
+| | Performance | Accessibility | Best practices | SEO |
 | --- | --- | --- | --- | --- |
-| Móvil | 94 | 100 | 100 | 100 |
-| Escritorio | 100 | 100 | 100 | 100 |
+| Mobile | 94 | 100 | 100 | 100 |
+| Desktop | 100 | 100 | 100 | 100 |
 
-JavaScript de unos 95 kB comprimido, CSS de 8 kB comprimido, sin imágenes de mapa de bits en la página (todo es SVG o CSS).
+About 95 kB of gzipped JavaScript and 8 kB of gzipped CSS, with no bitmap images on the page (everything is SVG or CSS).
 
-## Créditos
+## Credits
 
-- Contenido, reglas de negocio y datos de prueba: sistema Cyber Reinoso, de Favio Brañez.
-- Íconos: [Lucide](https://lucide.dev) (licencia ISC). Ícono de GitHub: marca de GitHub, usado solo para enlazar al repositorio.
-- Fuentes: Chakra Petch (Cadson Demak) e IBM Plex (IBM), ambas con licencia SIL Open Font.
-- No se usan fotografías.
+- Content, business rules and test data: the Cyber Reinoso system, by Favio Brañez.
+- Icons: [Lucide](https://lucide.dev) (ISC license). GitHub icon: GitHub's trademark, used only to link to the repository.
+- Fonts: Chakra Petch (Cadson Demak) and IBM Plex (IBM), both under the SIL Open Font License.
+- No photographs are used.
 
-## Ideas futuras
+## Future ideas
 
-- Pruebas unitarias de `lib/billing.js` y del reducer de la simulación (Vitest).
-- Modo "día completo" en la demo, con reporte de caja al cierre del turno.
-- Versión en inglés.
-- Capturas reales de la aplicación de escritorio junto a la recreación.
+- Unit tests for `lib/billing.js` and the simulation reducer (Vitest).
+- A "full day" mode in the demo, with an end-of-shift cash report.
+- An English version of the site.
+- Real screenshots of the desktop app next to the recreation.
 
 ---
 
-Diseñado y desarrollado por [Favio Brañez](https://github.com/Itsfavi0), estudiante de Ingeniería de Sistemas en la UNAC (Lima, Perú).
+Designed and built by [Favio Brañez](https://github.com/Itsfavi0), Systems Engineering student at UNAC (Lima, Peru).
