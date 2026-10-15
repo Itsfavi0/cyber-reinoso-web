@@ -5,7 +5,8 @@ import { createInitialState } from '../../hooks/useStationSimulation'
 import { useInView } from '../../hooks/useInView'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { formatClock, formatSoles } from '../../lib/billing'
-import { STATUS_STYLES, StatusGlyph } from '../ui/Status'
+import { StatusGlyph } from '../ui/Status'
+import { STATUS_STYLES } from '../ui/statusStyles'
 
 const GAMER_BY_ID = Object.fromEntries(GAMERS.map((gamer) => [gamer.id, gamer]))
 const FEATURED_GAMER = GAMER_BY_ID[5] // Dark, rango Diamante

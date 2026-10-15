@@ -51,8 +51,18 @@ export function createInitialState() {
     paused: false,
     log: [{ id: 0, clock: SIM_DAY_START, type: 'info', text: 'Turno abierto por renzo_caja (Cajero). 7 sesiones recuperadas desde SQL Server.' }],
     nextLogId: 1,
+    ticks: 0,
     lastCut: null,
   }
+}
+
+/** Minutos simulados que faltan para que el Kill Switch corte la sesión. */
+export function minutesUntilCut(station) {
+  const { session } = station
+  if (!session) return null
+  const perMinute = (rateOf(station) / 60) * (1 - session.discount)
+  const affordable = Math.floor(session.startBalance / perMinute + 1e-9)
+  return Math.max(0, affordable - Math.floor(session.elapsedSeconds / 60))
 }
 
 /** Saldo que le queda al gamer si la sesión se cerrara ahora mismo. */
@@ -83,7 +93,9 @@ function closeSession(state, code, isAutomaticCut) {
   let next = {
     ...state,
     gamers: { ...state.gamers, [gamer.id]: updatedGamer },
-    stations: state.stations.map((s) => (s.code === code ? { ...s, status: 'available', session: null } : s)),
+    stations: state.stations.map((s) =>
+      s.code === code ? { ...s, status: 'available', session: null, cutTick: isAutomaticCut ? state.ticks : null } : s,
+    ),
   }
 
   next = isAutomaticCut
@@ -93,7 +105,7 @@ function closeSession(state, code, isAutomaticCut) {
   if (newRank !== previousRank) {
     next = addLog(next, 'rank', `${gamer.alias} sube a rango ${newRank}.`)
   }
-  return isAutomaticCut ? { ...next, lastCut: { code, id: next.nextLogId } } : next
+  return isAutomaticCut ? { ...next, lastCut: { code, alias: gamer.alias, id: next.nextLogId } } : next
 }
 
 function tick(state) {
@@ -101,6 +113,7 @@ function tick(state) {
   let next = {
     ...state,
     clock: state.clock + state.speed,
+    ticks: state.ticks + 1,
     stations: state.stations.map((station) =>
       station.session
         ? { ...station, session: { ...station.session, elapsedSeconds: station.session.elapsedSeconds + state.speed } }
@@ -128,7 +141,9 @@ function startSession(state, code, gamerId) {
   }
   const next = {
     ...state,
-    stations: state.stations.map((s) => (s.code === code ? { ...s, status: 'busy', session: createSession(gamer) } : s)),
+    stations: state.stations.map((s) =>
+      s.code === code ? { ...s, status: 'busy', session: createSession(gamer), cutTick: null } : s,
+    ),
   }
   return addLog(next, 'start', `${gamer.alias} inicia sesión en ${code} (${CATEGORIES[station.category].label}).`)
 }

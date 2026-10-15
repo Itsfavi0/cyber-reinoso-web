@@ -176,3 +176,30 @@
   animation-delay: 260ms;
   animation-duration: 900ms;
 }
+
+/* Kill Switch: la estación parpadea dos veces en rojo al cortarse (solo opacidad) */
+@keyframes cut-flash {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  25%,
+  75% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.cut-flash::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 2px solid var(--color-signal);
+  background: color-mix(in oklab, var(--color-signal) 18%, transparent);
+  opacity: 0;
+  animation: cut-flash 1.2s ease-out 1;
+  pointer-events: none;
+}

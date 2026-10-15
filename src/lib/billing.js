@@ -51,3 +51,11 @@ export function formatHours(minutes) {
   const m = minutes % 60
   return m ? `${h} h ${m} min` : `${h} h`
 }
+
+/** Segundos desde medianoche -> "HH:MM". */
+export function formatDayClock(seconds) {
+  const minutesOfDay = Math.floor(seconds / 60) % (24 * 60)
+  const h = Math.floor(minutesOfDay / 60)
+  const m = minutesOfDay % 60
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`
+}
