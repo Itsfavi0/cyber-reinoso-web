@@ -218,7 +218,7 @@ function PosMockup() {
             </button>
             <div aria-live="polite" className="mt-3 empty:hidden">
               {result && (
-                <p className={`flex gap-2 text-xs ${result.ok ? 'text-mint' : 'text-signal'}`}>
+                <p key={result.text} className={`fade-in flex gap-2 text-xs ${result.ok ? 'text-mint' : 'text-signal'}`}>
                   {result.ok ? (
                     <CircleCheck className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
                   ) : (
