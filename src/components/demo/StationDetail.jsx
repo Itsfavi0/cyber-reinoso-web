@@ -97,7 +97,7 @@ function SessionPanel({ station, gamer, dispatch }) {
         </p>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+      <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1">
         <button type="button" className={primaryButton} onClick={() => dispatch({ type: 'topUp', gamerId: gamer.id })}>
           <Plus className="size-4" aria-hidden="true" />
           Recargar S/ 5.00
